@@ -29,8 +29,7 @@ export default class CartsMongoose {
       products.push({ product: pid, quantity: qt });
     } else {
       // @ts-ignore
-      serchprod.quantity += qt;
-      console.log(serchprod);
+      serchprod.quantity += qt
     }
     await this.#cartsDb.findByIdAndUpdate(cid, { products: products });
     return serchprod;

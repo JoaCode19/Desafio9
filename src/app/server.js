@@ -31,6 +31,7 @@ app.use(cors({ origin: "*" }));
 app.use("/public", express.static("public"));
 app.use(cookieParser(COOKIE_KEY));
 app.use(session);
+app.use(passportInitialize);
 
 app.engine("handlebars", engine());
 app.set("views", "./views");

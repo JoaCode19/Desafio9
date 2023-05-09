@@ -8,7 +8,6 @@ export async function postProductController(req, res, next) {
     const producto = new Products(req.body);
     const result = await pmg.addProduct(producto.datos());
     await socketFn();
-    console.log(result);
     res.json(result);
   } catch (error) {
     next(error);

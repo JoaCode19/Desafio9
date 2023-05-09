@@ -13,9 +13,11 @@ export async function postSesiones(req, res, next) {
 }
 
 export async function deleteSesiones(req, res, next) {
-  res.clearCookie("jwt_authorization", {
-    signed: true,
-    httpOnly: true,
+  req.logout(async (err) => {
+    res.clearCookie("jwt_authorization", {
+      signed: true,
+      httpOnly: true,
+    });
+    res.sendStatus(200);
   });
-  res.sendStatus(200);
 }

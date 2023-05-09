@@ -24,8 +24,16 @@ export async function newProductView(req, res, next) {
 export async function productView(req, res) {
   const urlsrt = `http://localhost:8080${req.originalUrl}`;
   const products = await pmg.getPagProducts(req.query, urlsrt);
-  const cartid = req.session.passport.user.cart || req.user.cart.id;
-  const usrrole = req.session.passport.user.role || req.user.role;
+  let cartid;
+  let usrrole;
+  if (req.session.passport) {
+    cartid = req.session.passport.user.cart;
+    usrrole = req.session.passport.user.role;
+  } else {
+    cartid = req.user.cart;
+    usrrole = req.user.role;
+  }
+
   const validrole = usrrole === "admin" || usrrole === "super-admin" ? 1 : 0;
   res.render(PATH_PRODUCT, {
     role: validrole,

@@ -12,7 +12,7 @@ import { soloRol } from "../../mid/authorization.js";
 export const appProducts = Router();
 appProducts.use(express.json());
 appProducts.use(express.urlencoded({ extended: true }));
-appProducts.use(soloRol("super-admin"));
+
 
 //agregar products a la persistencia en archivo desde el servidor
 

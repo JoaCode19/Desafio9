@@ -12,7 +12,7 @@ import { soloRol } from "../../mid/authorization.js";
 export const appCarts = Router();
 appCarts.use(express.json());
 appCarts.use(express.urlencoded({ extended: true }));
-appCarts.use(soloRol("super-admin"));
+
 
 //creo un carrito
 appCarts.post("/", postCart);
