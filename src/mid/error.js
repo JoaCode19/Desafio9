@@ -6,6 +6,9 @@ export const errorFn = (error, req, res, next) => {
     case "Some imput is empty":
       res.status(400);
       break;
+    case "Not Enough Stock":
+      res.status(409);
+      break;
     default:
       res.status(500);
   }

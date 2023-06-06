@@ -17,7 +17,7 @@ if (formRegister instanceof HTMLFormElement) {
       input_age instanceof HTMLInputElement &&
       input_password instanceof HTMLInputElement
     ) {
-      const datosUsuario = {
+      const dtoUsuario = {
         email: input_email.value,
         first_name: input_first_name.value,
         last_name: input_last_name.value,
@@ -27,7 +27,7 @@ if (formRegister instanceof HTMLFormElement) {
 
       const { status } = await fetch("/api/users", {
         method: "POST",
-        body: JSON.stringify(datosUsuario),
+        body: JSON.stringify(dtoUsuario),
         headers: { "Content-Type": "application/json" },
       });
 

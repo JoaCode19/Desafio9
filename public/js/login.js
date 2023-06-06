@@ -10,7 +10,7 @@ if (formLogin instanceof HTMLFormElement) {
       input_email instanceof HTMLInputElement &&
       input_password instanceof HTMLInputElement
     ) {
-      const datosUsuario = {
+      const dtoUsuario = {
         email: input_email.value,
         password: input_password.value,
       };
@@ -20,7 +20,7 @@ if (formLogin instanceof HTMLFormElement) {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(datosUsuario),
+        body: JSON.stringify(dtoUsuario),
       });
 
       if (status === 201) {

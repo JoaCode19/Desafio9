@@ -7,12 +7,10 @@ import { delPrdInCart } from "../../controllers/api/carts/controller.deleteprd.c
 import { putCart } from "../../controllers/api/carts/controller.put.carts.js";
 import { putPrdCart } from "../../controllers/api/carts/controller.putprd.carts.js";
 import { deleteAllPrdCart } from "../../controllers/api/carts/controller.delete.carts.js";
-import { soloRol } from "../../mid/authorization.js";
 
 export const appCarts = Router();
 appCarts.use(express.json());
 appCarts.use(express.urlencoded({ extended: true }));
-
 
 //creo un carrito
 appCarts.post("/", postCart);

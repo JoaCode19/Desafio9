@@ -16,7 +16,7 @@ export default class cartsManager {
     await fs.writeFile(this.#path, write);
   }
 
-  async addCart(cart) {
+  async add(cart) {
     await this.#loadCarts();
     this.carts.push(cart);
     await this.#writeCarts();
@@ -45,6 +45,5 @@ export default class cartsManager {
     return serchprod;
   }
 }
-
 
 export const cm = new cartsManager("./src/database/carts.json");

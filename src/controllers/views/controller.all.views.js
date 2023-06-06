@@ -1,13 +1,13 @@
-import { pm } from "../../dao/product.manager.fs.js";
-import { pmg } from "../../dao/product.manager.mg.js";
+import { productsRepository } from "../../repositories/product.repositorie.js";
+
 import {
   PATH_NEW_PRODUCT,
   PATH_PRODUCT,
   PATH_CARTS,
   PATH_LOGIN,
   PATH_REGIS,
-} from "../../config/config.viewspaths.js";
-import { cmg } from "../../dao/cart.manager.mg.js";
+} from "../../config/config.js";
+import { cmg } from "../../dao/mongoose/cart.dao.mg.js";
 
 export async function newProductView(req, res, next) {
   try {
@@ -23,7 +23,10 @@ export async function newProductView(req, res, next) {
 
 export async function productView(req, res) {
   const urlsrt = `http://localhost:8080${req.originalUrl}`;
-  const products = await pmg.getPagProducts(req.query, urlsrt);
+  const products = await productsRepository.getPaginatedElements(
+    req.query,
+    urlsrt
+  );
   let cartid;
   let usrrole;
   if (req.session.passport) {

@@ -1,6 +1,5 @@
-import { pm } from "../../../dao/product.manager.fs.js";
-import { pmg } from "../../../dao/product.manager.mg.js";
 import { socketFn } from "../../../mid/soketio.rt.js";
+import { productsRepository } from "../../../repositories/product.repositorie.js";
 
 export async function updateProduct(req, res, next) {
   let upd;
@@ -10,7 +9,7 @@ export async function updateProduct(req, res, next) {
     return next(error);
   }
   try {
-    const actualizada = await pmg.updateProduct(req.params.pid, upd);
+    const actualizada = await productsRepository.updateOne(req.params.pid, upd);
     await socketFn();
     res.json(actualizada);
   } catch (error) {

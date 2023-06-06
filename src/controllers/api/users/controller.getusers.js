@@ -1,6 +1,6 @@
-import { umg } from "../../../dao/users.manager.mg.js";
+import { userRepository } from "../../../repositories/users.repository.js";
 
 export async function getUsersController(req, res, next) {
-  const users = await umg.findUsers();
+  const users = await userRepository.findMany();
   res.json(users);
 }

@@ -1,22 +1,14 @@
-import { cm } from "../../../dao/cart.manager.fs.js";
-import { pm } from "../../../dao/product.manager.fs.js";
-import { pmg } from "../../../dao/product.manager.mg.js";
-import { cmg } from "../../../dao/cart.manager.mg.js";
+import { cartService } from "../../../services/cart.services.js";
 
-export async function postPdrInCart (req, res, next)  {
+export async function postPdrInCart(req, res, next) {
   try {
-    await pmg.getProductById(req.params.pid);
-  } catch (error) {
-    return next(error);
-  }
-  try {
-    const product = await cmg.addProductInCart(
+    const product = await cartService.chargeProducts(
       req.params.cid,
       req.params.pid,
-      Number(req.query.quantity) || 1
+      req.query.quantity
     );
-    res.json(product);
+    res.status(201).json(product);
   } catch (error) {
     next(error);
   }
-};
+}

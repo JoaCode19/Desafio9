@@ -4,27 +4,22 @@ import { Strategy as gitStrategy } from "passport-github2";
 import { ExtractJwt, Strategy as jwtStrategy } from "passport-jwt";
 import { manejoDeErrores } from "./error.js";
 import { bcCompare } from "../utils/hasher.js";
-import { ErrorAuth } from "../entidades/errorauth.js";
-import { CLIENTID_GIT, CLIENTSCR_GIT } from "../config/config.git.js";
-import { JWT_PRIVATE_KEY } from "../config/config.auth.js";
+import { ErrorAuth } from "./errorauth.js";
+import { CLIENTID_GIT, CLIENTSCR_GIT } from "../config/config.js";
+import { JWT_PRIVATE_KEY } from "../config/config.js";
 import { encriptarJWT } from "../utils/cripto.js";
 
-import Carts from "../entidades/carts.js";
-import Users from "../entidades/Users.js";
-// @ts-ignore
-import { cm } from "../dao/cart.manager.fs.js";
-import { cmg } from "../dao/cart.manager.mg.js";
-// @ts-ignore
-import { um } from "../dao/users.manager.fs.js";
-import { umg } from "../dao/users.manager.mg.js";
+import { cmg } from "../dao/mongoose/cart.dao.mg.js";
+import { userRepository } from "../repositories/users.repository.js";
+import { userService } from "../services/users.service.js";
 
 passport.use(
   "local",
   new Strategy({ usernameField: "email" }, async (username, password, done) => {
-    const userfinder = await umg.findUserByCondition({
+    console.log(username);
+    const user = await userRepository.findOne({
       email: username,
     });
-    const user = userfinder[0];
     if (!user) return done(new ErrorAuth());
     if (!bcCompare(password, user.password)) return done(new ErrorAuth());
     await cmg.delAllProductsInCart(user.cart);
@@ -34,7 +29,7 @@ passport.use(
       email: user.email,
       role: user.role,
       age: user.age,
-      cart: user.cart?._id,
+      cart: user.cart,
     });
   })
 );
@@ -50,47 +45,37 @@ passport.use(
     },
     async (req, accessToken, refreshToken, profile, done) => {
       try {
-        const newcart = new Carts();
-        const cart = await cmg.addCart(newcart);
-        req.session.cart = cart._id;
-        const user = {
-          email: profile.username,
+        const userinfo = {
+          email: `${profile.username}@${profile.username}.com`,
           first_name: profile.displayName,
           last_name: profile.displayName,
-          age: 0,
+          age: 100,
           password: `${profile.displayName}verficated`,
           role:
             profile.email === "adminCoder@coder.com"
               ? "admin"
               : profile.email === "joaquin.bidart@blackid.app"
               ? "admin"
-              : undefined,
-          cart: cart.id,
+              : "user",
         };
-
-        const newusr = new Users(user);
-        const userCreated = await umg.addUser(newusr.datos());
-        // const objusr = JSON.parse(JSON.stringify(userCreated));
-
-        req.session.user = userCreated;
-      } catch (error) {
-        await cmg.deleteCart(req.session.cart);
-        try {
-          const finder = await umg.findUserByCondition({
-            email: profile.username,
+        const userCreated = await userService.registrar(userinfo);
+        if (userCreated) {
+          req.session.user = userCreated;
+        } else {
+          const user = await userRepository.findOne({
+            email: `${profile.username}@${profile.username}.com`,
           });
-          const user = JSON.parse(JSON.stringify(finder[0]));
           await cmg.delAllProductsInCart(user.cart);
           req.session.user = user;
-        } catch {
-          done(error);
         }
+      } catch {
+        done(new ErrorAuth());
       }
       done(null, {
         name: req.session.user.first_name + " " + req.session.user.last_name,
         email: req.session.user.email,
         age: req.session.user.age,
-        cart: req.session.user.cart?._id,
+        cart: req.session.user.cart,
       });
     }
   )

@@ -1,11 +1,11 @@
-import { pm } from "../../../dao/product.manager.fs.js";
-import { pmg } from "../../../dao/product.manager.mg.js";
+import { productsRepository } from "../../../repositories/product.repositorie.js";
 
-export async function getProductController  (req, res, next)  {
+export async function getProductController(req, res, next) {
   try {
-    const producto = await pmg.getProductById(req.params.pid);
+    const producto = await productsRepository.findOneById(req.params.pid);
+    console.log(producto);
     res.json(producto);
   } catch (error) {
     next(error);
   }
-};
+}

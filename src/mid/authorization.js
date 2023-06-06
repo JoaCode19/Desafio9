@@ -1,4 +1,4 @@
-import { ErrorPermiss } from "../entidades/errorauth.js";
+import { ErrorPermiss } from "./errorauth.js";
 
 export function soloRol(rol) {
   return function (req, res, next) {

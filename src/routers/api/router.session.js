@@ -23,7 +23,7 @@ sessionRouter.get("/gitcall", anthGithub_CB, (req, res, next) => {
 //logout
 sessionRouter.delete("/", sesionesController.deleteSesiones);
 
-// datos de sesion, para testear!
+// dto de sesion, para testear!
 sessionRouter.get(
   "/current",
   authJwtApi,

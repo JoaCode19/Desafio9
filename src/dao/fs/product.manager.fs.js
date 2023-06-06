@@ -61,30 +61,6 @@ export default class ProductManager {
     }
     const oldproduct = this.products[updindex];
     this.products[updindex] = { ...oldproduct, ...productUpd };
-
-    /*opción 2: para poder utilizar esta version propuesta por el tuto debe comentar las validaciones en la clase product que lanzan el error "some imput are empty"*/
-
-    // const { title, description, price, thumbnail, stock, category } =
-    //   productUpd;
-
-    // this.products[updindex] = {
-    //   title: title ?? this.products[updindex].title,
-
-    //   description: description ?? this.products[updindex].description,
-
-    //   price: price ?? this.products[updindex].price,
-
-    //   thumbnail: thumbnail ?? this.products[updindex].thumbnail,
-
-    //   code: this.products[updindex].code,
-
-    //   stock: stock ?? this.products[updindex].stock,
-
-    //   category: category ?? this.products[updindex].category,
-    // };
-
-    //--
-
     this.products[updindex].id = id;
     await this.#writeProducts();
     return this.products[updindex];

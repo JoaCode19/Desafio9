@@ -10,14 +10,14 @@ import { apiRouter } from "../routers/api/router.api.js";
 import { viewsRouter } from "../routers/web/router.views.js";
 
 //config
-import { PORT } from "../config/config.server.js";
-import { COOKIE_KEY } from "../config/config.auth.js";
+import { PORT } from "../config/config.js";
+import { COOKIE_KEY } from "../config/config.js";
 
 //mid
 import { errorFn } from "../mid/error.js";
 import { socketFn } from "../mid/soketio.rt.js";
 //DDBB
-import { conectar } from "../database/mongoose.js";
+import { conectar } from "../dao/mongoose/mongoose.js";
 
 //Auth
 import session from "../mid/session.js";
